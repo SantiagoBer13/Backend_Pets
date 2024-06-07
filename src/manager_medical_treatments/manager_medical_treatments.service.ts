@@ -16,7 +16,10 @@ export class ManagerMedicalTreatmentsService {
     return `This action returns a #${id} managerMedicalTreatment`;
   }
 
-  update(id: number, updateManagerMedicalTreatmentDto: UpdateManagerMedicalTreatmentDto) {
+  update(
+    id: number,
+    updateManagerMedicalTreatmentDto: UpdateManagerMedicalTreatmentDto,
+  ) {
     return `This action updates a #${id} managerMedicalTreatment`;
   }
 

@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ManagerAllergiesService } from './manager_allergies.service';
 import { CreateManagerAllergyDto } from './dto/create-manager_allergy.dto';
 import { UpdateManagerAllergyDto } from './dto/update-manager_allergy.dto';
 
 @Controller('manager-allergies')
 export class ManagerAllergiesController {
-  constructor(private readonly managerAllergiesService: ManagerAllergiesService) {}
+  constructor(
+    private readonly managerAllergiesService: ManagerAllergiesService,
+  ) {}
 
   @Post()
   create(@Body() createManagerAllergyDto: CreateManagerAllergyDto) {
@@ -23,7 +33,10 @@ export class ManagerAllergiesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateManagerAllergyDto: UpdateManagerAllergyDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateManagerAllergyDto: UpdateManagerAllergyDto,
+  ) {
     return this.managerAllergiesService.update(+id, updateManagerAllergyDto);
   }
 

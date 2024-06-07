@@ -11,7 +11,9 @@ describe('ManagerVaccinesController', () => {
       providers: [ManagerVaccinesService],
     }).compile();
 
-    controller = module.get<ManagerVaccinesController>(ManagerVaccinesController);
+    controller = module.get<ManagerVaccinesController>(
+      ManagerVaccinesController,
+    );
   });
 
   it('should be defined', () => {

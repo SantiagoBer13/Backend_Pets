@@ -1,0 +1,12 @@
+version: 'version'
+services:
+  mysqldb:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=dbpetcare
+      - MYSQL_ROOT_PASSWORD=petcare1234
+      - MYSQL_USER=santi
+      - MYSQL_PASSWORD=petcare123
+    ports:
+      - 3307:3306  .
+      

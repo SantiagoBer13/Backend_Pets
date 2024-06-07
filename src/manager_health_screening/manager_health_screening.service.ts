@@ -16,7 +16,10 @@ export class ManagerHealthScreeningService {
     return `This action returns a #${id} managerHealthScreening`;
   }
 
-  update(id: number, updateManagerHealthScreeningDto: UpdateManagerHealthScreeningDto) {
+  update(
+    id: number,
+    updateManagerHealthScreeningDto: UpdateManagerHealthScreeningDto,
+  ) {
     return `This action updates a #${id} managerHealthScreening`;
   }
 

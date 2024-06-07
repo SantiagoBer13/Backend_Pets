@@ -8,9 +8,19 @@ import { ManagerAllergiesModule } from './manager_allergies/manager_allergies.mo
 import { ManagerDeworingModule } from './manager_deworing/manager_deworing.module';
 import { ManagerHealthScreeningModule } from './manager_health_screening/manager_health_screening.module';
 import { ManagerPetsModule } from './manager_pets/manager_pets.module';
+import { ManagerProfilesModule } from './manager_profiles/manager_profiles.module';
 
 @Module({
-  imports: [ManagerVaccinesModule, ManagerSurgeriesModule, ManagerMedicalTreatmentsModule, ManagerAllergiesModule, ManagerDeworingModule, ManagerHealthScreeningModule, ManagerPetsModule],
+  imports: [
+    ManagerVaccinesModule,
+    ManagerSurgeriesModule,
+    ManagerMedicalTreatmentsModule,
+    ManagerAllergiesModule,
+    ManagerDeworingModule,
+    ManagerHealthScreeningModule,
+    ManagerPetsModule,
+    ManagerProfilesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

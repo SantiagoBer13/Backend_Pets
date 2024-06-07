@@ -11,7 +11,9 @@ describe('ManagerDeworingController', () => {
       providers: [ManagerDeworingService],
     }).compile();
 
-    controller = module.get<ManagerDeworingController>(ManagerDeworingController);
+    controller = module.get<ManagerDeworingController>(
+      ManagerDeworingController,
+    );
   });
 
   it('should be defined', () => {
