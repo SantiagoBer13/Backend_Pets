@@ -19,6 +19,15 @@ export class ManagerPetsService {
         throw new NotFoundException(`Dueño de mascota con ID ${body.id_duenyo_mascota} no encontrado`);
       }
 
+      // Verificar si el tipo de mascota existe
+      const typePet = await this.prisma.tipoMascota.findUnique({
+        where: { id: body.id_tipo_mascota },
+      });
+
+      if (!typePet) {
+        throw new NotFoundException(`Tipo de mascota con ID ${body.id_tipo_mascota} no encontrado`);
+      }
+
       const pet = await this.prisma.mascotas.create({
         data: {
           nombre: body.nombre,
@@ -31,6 +40,7 @@ export class ManagerPetsService {
           fecha_nacimiento: body.fecha_nacimiento,
           estado: 'Activo',
           id_duenyo_mascota: body.id_duenyo_mascota,
+          id_tipo_mascota: body.id_tipo_mascota,
         },
       });
 
@@ -63,6 +73,11 @@ export class ManagerPetsService {
           estado: true,
           created_at: true,
           updated_at: true,
+          tipo_mascota: {
+            select: {
+              tipo: true,
+            },
+          },
         },
       });
 
@@ -100,6 +115,11 @@ export class ManagerPetsService {
               email: true,
             },
           },
+          tipo_mascota: {
+            select: {
+              tipo: true,
+            },
+          },
         },
       });
 
@@ -132,6 +152,11 @@ export class ManagerPetsService {
           estado: true,
           created_at: true,
           updated_at: true,
+          tipo_mascota: {
+            select: {
+              tipo: true,
+            },
+          },
         },
       });
 
@@ -169,6 +194,15 @@ export class ManagerPetsService {
         if (!owner) {
           throw new NotFoundException(`Dueño de mascota con ID ${body.id_duenyo_mascota} no encontrado`);
         }
+      }
+
+      // Verificar si el tipo de mascota existe
+      const typePet = await this.prisma.tipoMascota.findUnique({
+        where: { id: body.id_tipo_mascota },
+      });
+
+      if (!typePet) {
+        throw new NotFoundException(`Tipo de mascota con ID ${body.id_tipo_mascota} no encontrado`);
       }
 
       // Actualizar la mascota en la base de datos

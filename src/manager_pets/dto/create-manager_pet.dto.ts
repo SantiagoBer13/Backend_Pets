@@ -97,4 +97,13 @@ export class CreateManagerPetDto {
   @IsInt()
   @IsNotEmpty()
   id_duenyo_mascota: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'ID del tipo de mascota',
+    example: 1,
+  })
+  @IsInt()
+  @IsNotEmpty()
+  id_tipo_mascota: number;
 }
