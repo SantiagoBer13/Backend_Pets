@@ -14,30 +14,140 @@ datasource db {
 }
 
 model Veterinarios {
-  id          Int     @id @default(autoincrement())
-  nombre      String @map("nombre") @db.VarChar(100)
-  nombreUsuario String @map("nombre_usuario") @db.VarChar(100)
-  direccion   String @map("direccion") @db.VarChar(100)
-  telefono    String @map("telefono") @db.VarChar(20)
-  email       String @map("email") @unique @db.VarChar(100)
-  cc          String @map("cc") @unique
-  password    String @map("password") @db.VarChar(100)
-  passwordHash  String @map("password_hash")
-  especialidad String @map("especialidad") @db.VarChar(100)
-  createdAt DateTime @map("created_at") @default(now())
-  updatedAt DateTime @map("updated_at") @updatedAt
+  id             Int      @id @default(autoincrement())
+  nombre         String   @map("nombre") @db.VarChar(100)
+  nombre_usuario String   @unique @map("nombre_usuario") @db.VarChar(100)
+  direccion      String   @map("direccion") @db.VarChar(100)
+  telefono       String   @map("telefono") @db.VarChar(20)
+  email          String   @unique @map("email") @db.VarChar(100)
+  cc             String   @unique @map("cc")
+  password       String   @map("password") @db.VarChar(100)
+  password_hash  String   @map("password_hash")
+  especialidad   String   @map("especialidad") @db.VarChar(100)
+  created_at     DateTime @default(now()) @map("created_at")
+  updated_at     DateTime @updatedAt @map("updated_at")
+
+  vacunaMascota     VacunaMascota[]
+  desparacitaciones Desparacitaciones[]
+  alergias          Alergias[]
 }
 
 model DuenosMascotas {
-  id        Int     @id @default(autoincrement())
-  nombre    String @map("nombre") @db.VarChar(100)
-  nombreUsuario String @map("nombre_usuario") @db.VarChar(100)
-  direccion String @map("direccion") @db.VarChar(100)
-  telefono  String @map("telefono") @db.VarChar(20)
-  email     String @map("email") @db.VarChar(100)
-  cc        String @map("cc") @unique @db.VarChar(50)
-  password  String @map("password") @db.VarChar(100)
-  passwordHash  String @map("password_hash")
-  createdAt DateTime @map("created_at") @default(now())
-  updatedAt DateTime @map("updated_at") @updatedAt
+  id             Int      @id @default(autoincrement())
+  nombre         String   @map("nombre") @db.VarChar(100)
+  nombre_usuario String   @unique @map("nombre_usuario") @db.VarChar(100)
+  direccion      String   @map("direccion") @db.VarChar(100)
+  telefono       String   @map("telefono") @db.VarChar(20)
+  email          String   @map("email") @db.VarChar(100)
+  cc             String   @unique @map("cc") @db.VarChar(50)
+  password       String   @map("password") @db.VarChar(100)
+  password_hash  String   @map("password_hash")
+  created_at     DateTime @default(now()) @map("created_at")
+  updated_at     DateTime @updatedAt @map("updated_at")
+
+  // Relación inversa con las mascotas
+  mascotas Mascotas[]
+}
+
+model Mascotas {
+  id               Int      @id @default(autoincrement())
+  nombre           String   @map("nombre") @db.VarChar(100)
+  sexo             String   @map("sexo") @db.VarChar(2)
+  microchip        String   @map("microship") @db.VarChar(50)
+  raza             String   @map("raza") @db.VarChar(50)
+  especie          String   @map("especie") @db.VarChar(50)
+  peso             Float?   @map("peso")
+  color            String   @map("color") @db.VarChar(50)
+  fecha_nacimiento DateTime @map("fecha_nacimiento") @db.Date
+  estado           String   @map("estado") @db.VarChar(50)
+  created_at       DateTime @default(now()) @map("created_at")
+  updated_at       DateTime @updatedAt @map("updated_at")
+
+  // Relación con el dueño de la mascota
+  dueno             DuenosMascotas @relation(fields: [id_duenyo_mascota], references: [id])
+  id_duenyo_mascota Int            @map("id_duenyo_mascota")
+
+  // Relación con el tipo de mascota
+  tipo_mascota    TipoMascota @relation(fields: [id_tipo_mascota], references: [id])
+  id_tipo_mascota Int         @map("id_tipo_mascota")
+
+  vacunaMascota     VacunaMascota[]
+  desparacitaciones Desparacitaciones[]
+  alergias          Alergias[]
+}
+
+model TipoMascota {
+  id       Int        @id @default(autoincrement())
+  tipo     String     @map("tipo")
+  mascotas Mascotas[] // Relación uno a muchos con Mascota
+}
+
+model Vacunas {
+  id          Int      @id @default(autoincrement())
+  nombre      String   @map("nombre") @db.VarChar(100)
+  numero_lote String   @map("numero_lote") @db.VarChar(100)
+  created_at  DateTime @default(now()) @map("created_at")
+  updated_at  DateTime @updatedAt @map("updated_at")
+
+  vacunaMascota VacunaMascota[]
+}
+
+model VacunaMascota {
+  id                       Int      @id @default(autoincrement())
+  fecha_vacunacion         DateTime @map("fecha_vacunacion")
+  fecha_proxima_vacunacion DateTime @map("fecha_proxima_vacunacion") @db.Date
+  dosis                    String   @map("dosis") @db.VarChar(20)
+  motivo                   String   @map("motivo")
+  created_at               DateTime @default(now()) @map("created_at")
+  updated_at               DateTime @updatedAt @map("updated_at")
+
+  mascota     Mascotas     @relation(fields: [id_mascota], references: [id])
+  vacuna      Vacunas      @relation(fields: [id_vacuna], references: [id])
+  veterinario Veterinarios @relation(fields: [id_veterinario], references: [id])
+
+  id_mascota     Int @map("id_mascota")
+  id_vacuna      Int @map("id_vacuna")
+  id_veterinario Int @map("id_veterinario")
+}
+
+model Medicamentos {
+  id          Int      @id @default(autoincrement())
+  nombre      String   @map("nombre") @db.VarChar(100)
+  forma       String   @map("forma") @db.VarChar(100)
+  numero_lote String   @map("numero_lote") @db.VarChar(100)
+  created_at  DateTime @default(now()) @map("created_at")
+  updated_at  DateTime @updatedAt @map("updated_at")
+
+  desparacitaciones Desparacitaciones[]
+}
+
+model Desparacitaciones {
+  id                            Int      @id @default(autoincrement())
+  fecha_desparacitacion         DateTime @map("fecha_desparacitacion")
+  fecha_proxima_desparacitacion DateTime @map("fecha_proxima_desparacitacion")
+  observaciones                 String   @map("observaciones")
+  created_at                    DateTime @default(now()) @map("created_at")
+  updated_at                    DateTime @updatedAt @map("updated_at")
+
+  mascota     Mascotas     @relation(fields: [id_mascota], references: [id])
+  medicamento Medicamentos @relation(fields: [id_medicamento], references: [id])
+  veterinario Veterinarios @relation(fields: [id_veterinario], references: [id])
+
+  id_mascota     Int @map("id_mascota")
+  id_medicamento Int @map("id_medicamento")
+  id_veterinario Int @map("id_veterinario")
+}
+
+model Alergias {
+  id             Int      @id @default(autoincrement())
+  nombre_alergia String   @map("nombre_alergia") @db.VarChar(100)
+  descripcion    String   @map("descripcion")
+  created_at     DateTime @default(now()) @map("created_at")
+  updated_at     DateTime @updatedAt @map("updated_at")
+
+  mascota     Mascotas     @relation(fields: [id_mascota], references: [id])
+  veterinario Veterinarios @relation(fields: [id_veterinario], references: [id])
+
+  id_mascota     Int @map("id_mascota")
+  id_veterinario Int @map("id_veterinario")
 }

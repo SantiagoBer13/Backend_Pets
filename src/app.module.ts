@@ -9,6 +9,8 @@ import { ManagerDeworingModule } from './manager_deworing/manager_deworing.modul
 import { ManagerHealthScreeningModule } from './manager_health_screening/manager_health_screening.module';
 import { ManagerPetsModule } from './manager_pets/manager_pets.module';
 import { ManagerProfilesModule } from './manager_profiles/manager_profiles.module';
+import { ManagerOwnersModule } from './manager_owners/manager_owners.module';
+import { ManagerVeterinariansModule } from './manager_veterinarians/manager_veterinarians.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { ManagerProfilesModule } from './manager_profiles/manager_profiles.modul
     ManagerHealthScreeningModule,
     ManagerPetsModule,
     ManagerProfilesModule,
+    ManagerOwnersModule,
+    ManagerVeterinariansModule,
   ],
   controllers: [AppController],
   providers: [AppService],

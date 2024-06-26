@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Put,
 } from '@nestjs/common';
 import { ManagerPetsService } from './manager_pets.service';
 import { CreateManagerPetDto } from './dto/create-manager_pet.dto';
@@ -14,10 +16,10 @@ import { UpdateManagerPetDto } from './dto/update-manager_pet.dto';
 @Controller('manager-pets')
 export class ManagerPetsController {
   constructor(private readonly managerPetsService: ManagerPetsService) {}
-
+ 
   @Post()
-  create(@Body() createManagerPetDto: CreateManagerPetDto) {
-    return this.managerPetsService.create(createManagerPetDto);
+  create(@Body() body: CreateManagerPetDto) {
+    return this.managerPetsService.create(body);
   }
 
   @Get()
@@ -25,21 +27,26 @@ export class ManagerPetsController {
     return this.managerPetsService.findAll();
   }
 
+  @Get('with-owner')
+  findAllWithOwner() {
+    return this.managerPetsService.findAllWithOwner();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.managerPetsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateManagerPetDto: UpdateManagerPetDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateManagerPetDto,
   ) {
-    return this.managerPetsService.update(+id, updateManagerPetDto);
+    return this.managerPetsService.update(+id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.managerPetsService.remove(+id);
   }
 }

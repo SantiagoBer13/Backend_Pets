@@ -9,9 +9,11 @@ export class CreateManagerVaccineDto {
   })
   token: string;
 
+  /*
   @ApiProperty({ type: Number, description: 'ID de la mascota', example: 1 })
   @IsInt()
   id_mascota: number;
+  */
 
   @ApiProperty({
     type: String,
@@ -29,6 +31,7 @@ export class CreateManagerVaccineDto {
   @IsString()
   numero_lote: string;
 
+  /*
   @ApiProperty({
     type: Date,
     description: 'Fecha de vacunación',
@@ -44,4 +47,5 @@ export class CreateManagerVaccineDto {
   })
   @IsDate()
   fecha_proxima_vacunacion: Date;
+  */
 }

@@ -1,19 +1,21 @@
-import { IsString, IsInt, IsDate, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString, IsInt, IsDate, IsNotEmpty, IsEnum, IsDecimal, IsNumber, IsPositive, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 enum Sexo {
-  Macho = 'Macho',
-  Hembra = 'Hembra',
+  Macho = 'M',
+  Hembra = 'H',
 }
 
 export class CreateManagerPetDto {
+  /*
   @ApiProperty({
     type: String,
     description: 'Token de autorización',
     example: 'Bearer <token>',
   })
   token: string;
-
+  */
   @ApiProperty({
     type: String,
     description: 'Nombre de la mascota',
@@ -26,7 +28,7 @@ export class CreateManagerPetDto {
   @ApiProperty({
     type: String,
     description: 'Sexo de la mascota',
-    enum: ['Macho', 'Hembra'],
+    enum: ['M', 'H'],
     example: 'Hembra',
   })
   @IsEnum(Sexo)
@@ -61,21 +63,13 @@ export class CreateManagerPetDto {
 
   @ApiProperty({
     type: Number,
-    description: 'Edad de la mascota en años',
-    example: 3,
-  })
-  @IsInt()
-  @IsNotEmpty()
-  edad: number;
-
-  @ApiProperty({
-    type: String,
     description: 'Peso de la mascota',
-    example: '5 kg',
+    example: 5.5,
   })
-  @IsString()
   @IsNotEmpty()
-  peso: string;
+  @IsNumber()
+  @IsPositive()
+  peso: number;
 
   @ApiProperty({
     type: String,
@@ -87,13 +81,13 @@ export class CreateManagerPetDto {
   color: string;
 
   @ApiProperty({
-    type: Date,
+    type: String,
     description: 'Fecha de nacimiento de la mascota',
     example: '2020-01-15',
   })
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  fecha_nacimiento: Date;
+  fecha_nacimiento: string;
 
   @ApiProperty({
     type: Number,
@@ -102,5 +96,5 @@ export class CreateManagerPetDto {
   })
   @IsInt()
   @IsNotEmpty()
-  id_dueño_mascota: number;
+  id_duenyo_mascota: number;
 }

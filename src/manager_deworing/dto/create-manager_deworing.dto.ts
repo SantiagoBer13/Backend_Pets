@@ -2,6 +2,7 @@ import { IsString, IsInt, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateManagerDeworingDto {
+  /*
   @ApiProperty({
     type: String,
     description: 'Token de autorización',
@@ -12,6 +13,7 @@ export class CreateManagerDeworingDto {
   @ApiProperty({ type: Number, description: 'ID de la mascota', example: 1 })
   @IsInt()
   id_mascota: number;
+  */
 
   @ApiProperty({
     type: String,
@@ -19,7 +21,7 @@ export class CreateManagerDeworingDto {
     example: 'Desparasitante X',
   })
   @IsString()
-  nombre_medicamento: string;
+  nombre: string;
 
   @ApiProperty({
     type: String,
@@ -27,8 +29,17 @@ export class CreateManagerDeworingDto {
     example: 'Tabletas',
   })
   @IsString()
-  forma_medicamento: string;
+  forma: string;
 
+  @ApiProperty({
+    type: String,
+    description: 'Número de lote de la vacuna',
+    example: 'ABC123',
+  })
+  @IsString()
+  numero_lote: string;
+
+  /*
   @ApiProperty({
     type: Date,
     description: 'Fecha de desparasitación',
@@ -44,4 +55,5 @@ export class CreateManagerDeworingDto {
   })
   @IsDate()
   fecha_proxima: Date;
+  */
 }
