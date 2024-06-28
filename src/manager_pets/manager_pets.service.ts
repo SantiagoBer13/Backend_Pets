@@ -134,6 +134,42 @@ export class ManagerPetsService {
       throw new InternalServerErrorException('Error interno del servidor');
     }
   }
+
+  async findPetsByOwner(ownerId: number) {
+    try {
+      const pets = await this.prisma.mascotas.findMany({
+        where: { id_duenyo_mascota: ownerId },
+        select: {
+          id: true,
+          nombre: true,
+          sexo: true,
+          microchip: true,
+          raza: true,
+          especie: true,
+          peso: true,
+          color: true,
+          fecha_nacimiento: true,
+          estado: true,
+          tipo_mascota: {
+            select: {
+              tipo: true,
+            },
+          },
+        },
+      });
+
+      if (!pets || pets.length === 0) {
+        return {
+          message: "No hay mascotas para este dueño",
+        };
+      }
+
+      return pets;
+    } catch (error) {
+      console.error('Error al recuperar las mascotas del dueño:', error.message);
+      throw new InternalServerErrorException('Error interno del servidor');
+    }
+  }
   
   async findOne(id: number) {
     try {
