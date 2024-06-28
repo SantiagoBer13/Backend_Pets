@@ -1,3 +1,5 @@
+
+/*
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -24,3 +26,4 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
   },
 };
+*/

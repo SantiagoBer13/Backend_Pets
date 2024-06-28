@@ -150,7 +150,7 @@ export class ManagerDeworingService {
   }
 
 
-  async createDeworingPet(body: CreateManagerDeworingPetDto) {
+  async createDeworingPet(body: CreateManagerDeworingPetDto, id_veterinario: number) {
     try {
       // Verificar si la mascota existe
       const pet = await this.prisma.mascotas.findUnique({
@@ -172,11 +172,11 @@ export class ManagerDeworingService {
 
       // Verificar si el veterinario existe
       const veterinario = await this.prisma.veterinarios.findUnique({
-        where: { id: body.id_veterinario },
+        where: { id: id_veterinario },
       });
 
       if (!veterinario) {
-        throw new NotFoundException(`Veterinario con ID ${body.id_veterinario} no encontrado`);
+        throw new NotFoundException(`Veterinario con ID ${id_veterinario} no encontrado`);
       }
 
       // Crear la relación desparacitación-mascota
@@ -184,7 +184,7 @@ export class ManagerDeworingService {
         data: {
           id_mascota: body.id_mascota,
           id_medicamento: body.id_medicamento,
-          id_veterinario: body.id_veterinario,
+          id_veterinario: id_veterinario,
           fecha_desparacitacion: new Date(body.fecha_desparacitacion), // Convertir a objeto Date
           fecha_proxima_desparacitacion: new Date(body.fecha_proxima_desparacitacion), // Convertir a objeto Date
           observaciones: body.observaciones,
@@ -214,12 +214,19 @@ export class ManagerDeworingService {
         },
         select: {
           id_mascota: true,
-          id_medicamento: true,
           fecha_desparacitacion: true,
           fecha_proxima_desparacitacion: true,
           observaciones: true,
           created_at: true,
           updated_at: true,
+          medicamento: {
+            select: {
+              id: true,
+              nombre: true,
+              forma: true,
+              numero_lote: true
+            }
+          },
         },
       });
 
@@ -240,6 +247,22 @@ export class ManagerDeworingService {
     try {
       const deworingPet = await this.prisma.desparacitaciones.findUnique({
         where: { id },
+        select: {
+          id_mascota: true,
+          fecha_desparacitacion: true,
+          fecha_proxima_desparacitacion: true,
+          observaciones: true,
+          created_at: true,
+          updated_at: true,
+          medicamento: {
+            select: {
+              id: true,
+              nombre: true,
+              forma: true,
+              numero_lote: true
+            }
+          },
+        }
       });
 
       if (!deworingPet) {
@@ -257,7 +280,7 @@ export class ManagerDeworingService {
     }
   }
 
-  async updateDeworingPet(id: number, body: UpdateManagerDeworingPetDto) {
+  async updateDeworingPet(id: number, body: UpdateManagerDeworingPetDto, id_veterinario: number) {
     try {
       // Verificar si la desparacitación de la mascota existe
       const desparacitacionPet = await this.prisma.desparacitaciones.findUnique({
@@ -291,13 +314,13 @@ export class ManagerDeworingService {
       }
 
       // Verificar y actualizar el veterinario si se proporciona el ID
-      if (body.id_veterinario) {
+      if (id_veterinario) {
         const veterinarian = await this.prisma.veterinarios.findUnique({
-          where: { id: body.id_veterinario },
+          where: { id: id_veterinario },
         });
 
         if (!veterinarian) {
-          throw new NotFoundException(`Veterinario con ID ${body.id_veterinario} no encontrado`);
+          throw new NotFoundException(`Veterinario con ID ${id_veterinario} no encontrado`);
         }
       }
 
@@ -309,13 +332,20 @@ export class ManagerDeworingService {
         },
         select: {
           id_mascota: true,
-          id_veterinario: true,
           fecha_desparacitacion: true,
           fecha_proxima_desparacitacion: true,
           observaciones: true,
           created_at: true,
           updated_at: true,
-        },
+          medicamento: {
+            select: {
+              id: true,
+              nombre: true,
+              forma: true,
+              numero_lote: true
+            }
+          },
+        }
       });
 
       return {

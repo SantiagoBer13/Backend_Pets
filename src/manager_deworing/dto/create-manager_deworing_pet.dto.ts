@@ -23,11 +23,6 @@ export class CreateManagerDeworingPetDto {
   @IsDateString()
   fecha_proxima_desparacitacion: string;
 
-  @ApiProperty({ example: 1, description: 'ID del veterinario' })
-  @IsNotEmpty()
-  @IsNumber()
-  id_veterinario: number;
-
   @ApiProperty({ example: 'Vacunación anual', description: 'Observaciones de la desparacitación' })
   @IsNotEmpty()
   @IsString()
