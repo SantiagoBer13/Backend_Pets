@@ -145,7 +145,7 @@ export class ManagerVaccinesService {
     }
   }
 
-  async createVaccinePet(body: CreateManagerVaccinePetDto) {
+  async createVaccinePet(body: CreateManagerVaccinePetDto, id_veterinario: number) {
     try {
       // Verificar si la mascota existe
       const pet = await this.prisma.mascotas.findUnique({
@@ -167,11 +167,11 @@ export class ManagerVaccinesService {
 
       // Verificar si el veterinario existe
       const veterinario = await this.prisma.veterinarios.findUnique({
-        where: { id: body.id_veterinario },
+        where: { id: id_veterinario },
       });
 
       if (!veterinario) {
-        throw new NotFoundException(`Veterinario con ID ${body.id_veterinario} no encontrado`);
+        throw new NotFoundException(`Veterinario con ID ${id_veterinario} no encontrado`);
       }
 
       // Crear la relación vacuna-mascota
@@ -179,7 +179,7 @@ export class ManagerVaccinesService {
         data: {
           id_mascota: body.id_mascota,
           id_vacuna: body.id_vacuna,
-          id_veterinario: body.id_veterinario,
+          id_veterinario: id_veterinario,
           fecha_vacunacion: new Date(body.fecha_vacunacion),
           fecha_proxima_vacunacion: new Date(body.fecha_proxima_vacunacion),
           dosis: body.dosis,
@@ -209,13 +209,19 @@ export class ManagerVaccinesService {
         },
         select: {
           id_mascota: true,
-          id_vacuna: true,
           fecha_vacunacion: true,
           fecha_proxima_vacunacion: true,
           dosis: true,
           motivo: true,
           created_at: true,
           updated_at: true,
+          vacuna: {
+            select: {
+              id: true,
+              nombre: true,
+              numero_lote: true,
+            }
+          }
         },
       });
 
@@ -234,7 +240,22 @@ export class ManagerVaccinesService {
 
   async findOneVaccinePet(id: number) {
     try {
-      const vaccinePet = await this.prisma.vacunaMascota.findUnique({ where: { id } });
+      const vaccinePet = await this.prisma.vacunaMascota.findUnique({ where: { id }, select: {
+        id_mascota: true,
+        fecha_vacunacion: true,
+        fecha_proxima_vacunacion: true,
+        dosis: true,
+        motivo: true,
+        created_at: true,
+        updated_at: true,
+        vacuna: {
+          select: {
+            id: true,
+            nombre: true,
+            numero_lote: true,
+          }
+        }
+      }, });
       if (!vaccinePet) {
         throw new NotFoundException(`Vacuna de mascota con ID ${id} no encontrada`);
       }
@@ -249,7 +270,7 @@ export class ManagerVaccinesService {
     }
   }
 
-  async updateVaccinePet(id: number, body: UpdateManagerVaccinePetDto) {
+  async updateVaccinePet(id: number, body: UpdateManagerVaccinePetDto, id_veterinario: number) {
     try {
       // Verificar si la vacuna de la mascota existe
       const vaccinePet = await this.prisma.vacunaMascota.findUnique({
@@ -283,13 +304,13 @@ export class ManagerVaccinesService {
       }
 
       // Verificar y actualizar el veterinario si se proporciona el ID
-      if (body.id_veterinario) {
+      if (id_veterinario) {
         const veterinarian = await this.prisma.veterinarios.findUnique({
-          where: { id: body.id_veterinario },
+          where: { id: id_veterinario },
         });
 
         if (!veterinarian) {
-          throw new NotFoundException(`Veterinario con ID ${body.id_veterinario} no encontrado`);
+          throw new NotFoundException(`Veterinario con ID ${id_veterinario} no encontrado`);
         }
       }
 
@@ -301,13 +322,19 @@ export class ManagerVaccinesService {
         },
         select: {
           id_mascota: true,
-          id_vacuna: true,
           fecha_vacunacion: true,
           fecha_proxima_vacunacion: true,
           dosis: true,
           motivo: true,
           created_at: true,
           updated_at: true,
+          vacuna: {
+            select: {
+              id: true,
+              nombre: true,
+              numero_lote: true,
+            }
+          }
         },
       });
 

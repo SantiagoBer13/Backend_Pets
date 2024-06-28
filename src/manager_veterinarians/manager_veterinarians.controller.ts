@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ParseIntPipe } 
 import { ManagerVeterinariansService } from './manager_veterinarians.service';
 import { CreateManagerVeterinarianDto } from './dto/create-manager_veterinarian.dto';
 import { UpdateManagerVeterinarianDto } from './dto/update-manager_veterinarian.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('manager-veterinarians')
 @Controller('manager-veterinarians')
 export class ManagerVeterinariansController {
   constructor(private readonly managerVeterinariansService: ManagerVeterinariansService) {}
