@@ -227,6 +227,11 @@ export class ManagerDeworingService {
               numero_lote: true
             }
           },
+          veterinario: {
+            select: {
+              nombre: true,
+            }
+          }
         },
       });
 
@@ -262,6 +267,11 @@ export class ManagerDeworingService {
               numero_lote: true
             }
           },
+          veterinario: {
+            select: {
+              nombre: true,
+            }
+          }
         }
       });
 

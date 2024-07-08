@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, IsNumber } from 'class-validator';
 
 export class CreateManagerOwnerDto {
   @ApiProperty({
@@ -19,6 +19,15 @@ export class CreateManagerOwnerDto {
   @IsString()
   @IsNotEmpty()
   direccion: string;
+
+  @ApiProperty({
+    type: Number,
+    description: 'Vereda de residencia del dueño de la mascota',
+    example: 1,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  id_vereda: number;
 
   @ApiProperty({
     type: String,

@@ -44,10 +44,23 @@ model DuenosMascotas {
   password_hash  String   @map("password_hash")
   created_at     DateTime @default(now()) @map("created_at")
   updated_at     DateTime @updatedAt @map("updated_at")
+  id_vereda      Int @map("id_vereda")
+
+  // Relación con Veredas
+  vereda         Veredas  @relation(fields: [id_vereda], references: [id])
 
   // Relación inversa con las mascotas
   mascotas Mascotas[]
 }
+
+model Veredas {
+  id     Int      @id @default(autoincrement())
+  nombre String   @db.VarChar(100) @map("nombre")
+
+  // Relación inversa con DuenosMascotas
+  duenosMascotas DuenosMascotas[]
+}
+
 
 model Mascotas {
   id               Int      @id @default(autoincrement())

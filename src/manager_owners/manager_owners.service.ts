@@ -10,7 +10,8 @@ export class ManagerOwnersService {
   constructor(private prisma: PrismaService){}
 
   async create(body: CreateManagerOwnerDto) {
-    // Verificar si la cédula ya existe
+    try {
+      // Verificar si la cédula ya existe
     const ccExists = await this.prisma.duenosMascotas.findUnique({
       where: { cc: body.cc },
     });
@@ -40,11 +41,22 @@ export class ManagerOwnersService {
       suffix++;
     }
 
+    // Verificar si la Vereda existe
+    let id = body.id_vereda
+    let veredaExists = await this.prisma.veredas.findUnique({
+      where: { id },
+    });
+
+    if(!veredaExists){
+      throw new NotFoundException(`Vereda con ID ${id} no encontrado`);
+    }
+
     // Crear el usuario en la base de datos
     const user = await this.prisma.duenosMascotas.create({
       data: {
         nombre: body.nombre,
         direccion: body.direccion,
+        id_vereda: body.id_vereda,
         telefono: body.telefono,
         email: body.email,
         cc: body.cc,
@@ -56,6 +68,13 @@ export class ManagerOwnersService {
 
     // Devolver el mensaje de éxito y el ID del usuario creado
     return { mensaje: 'Usuario creado', id_dueño_mascota: user.id, nombre_usuario: user.nombre_usuario };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      console.error('Error al buscar dueño por ID:', error.message);
+      throw new Error('Error al buscar dueño por ID');
+    }
   }
 
   async findAll() {
