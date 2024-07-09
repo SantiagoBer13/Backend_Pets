@@ -11,6 +11,7 @@ import { ManagerPetsModule } from './manager_pets/manager_pets.module';
 import { ManagerProfilesModule } from './manager_profiles/manager_profiles.module';
 import { ManagerOwnersModule } from './manager_owners/manager_owners.module';
 import { ManagerVeterinariansModule } from './manager_veterinarians/manager_veterinarians.module';
+import { ManagerStatisticsModule } from './manager-statistics/manager-statistics.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ManagerVeterinariansModule } from './manager_veterinarians/manager_vete
     ManagerProfilesModule,
     ManagerOwnersModule,
     ManagerVeterinariansModule,
+    ManagerStatisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
